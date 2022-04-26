@@ -13,26 +13,27 @@ namespace Flock.Logic
     {
         public static void GetLocation(String provinceName, ref ResponseModel response)
         {
-            var a = CallGobApi(provinceName).GetAwaiter().GetResult();
+            var provResult = CallGobApi(provinceName).Result;
 
-            //if (provModel.ProvinceList.Count > 0)
-            //{
-            //    response.Type = "OK";
-            //    response.Data = provModel.ProvinceList[0].Location;
-            //}
-            //else
-            //{
-            //    response.Type = "Error";
-            //    response.Message = "No se encontraron provincias";
-            //}
+            if (provResult.ProvinceList.Count > 0)
+            {
+                response.Type = "OK";
+                response.Data = provResult.ProvinceList[0].Location;
+            }
+            else
+            {
+                response.Type = "Error";
+                response.Message = "No se encontraron provincias";
+            }
         }
 
         public static async Task<ProvinceModel> CallGobApi(String provinceName)
         {
             using (var client = new HttpClient())
             {
-                var json = await client.GetStringAsync("https://apis.datos.gob.ar/georef/api/provincias?nombre=" + provinceName);
-                
+                var json = await client.GetStringAsync("https://apis.datos.gob.ar/georef/api/provincias?nombre=" + provinceName)
+                             .ConfigureAwait(continueOnCapturedContext: false);
+
                 return JsonConvert.DeserializeObject<ProvinceModel>(json);
             }
         }
