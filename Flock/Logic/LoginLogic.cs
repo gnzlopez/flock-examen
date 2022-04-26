@@ -23,16 +23,19 @@ namespace Flock.Logic
 
         public static void Login(UserModel oUser, ref ResponseModel response)
         {
+            LogLogic.Log("Inicia la busqueda de Usuario ");
             var user = GetUser(oUser.UserName);
             isLogin = user != null && user.UserPass == oUser.UserPass;
 
             if (isLogin)
             {
+                LogLogic.Log("Usuario logueado OK ");
                 response.Type = "OK";
                 response.Data = user;
             }
             else
             {
+                LogLogic.Log("Usuario no logueado correctamente ");
                 response.Type = "Error";
                 response.Message = "Datos invalidos";
             }

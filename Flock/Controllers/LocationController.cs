@@ -21,7 +21,7 @@ namespace Flock.Controllers
             }
             catch (Exception e)
             {
-
+                LogLogic.Log($"Error:{e.Data} ");
                 response.Type = "Error";
                 response.Message = e.Message;
             }
