@@ -1,5 +1,6 @@
 ﻿using Flock.Logic;
 using Flock.Models;
+using Flock.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,12 @@ namespace Flock.Controllers
 {
     public class LoginController : ApiController
     {
+        LoginLogic _logic;
+
+        public LoginController()
+        {
+            _logic = new LoginLogic(new UserRepository());
+        }
 
         [HttpPost]
         public ResponseModel Login([FromBody] UserModel oUser)
@@ -17,7 +24,7 @@ namespace Flock.Controllers
             var response = new ResponseModel();
             try
             {
-                LoginLogic.Login(oUser, ref response);
+                _logic.Login(oUser, ref response);
             }
             catch (Exception e)
             {

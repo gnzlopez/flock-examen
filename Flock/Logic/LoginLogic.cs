@@ -1,4 +1,5 @@
 ﻿using Flock.Models;
+using Flock.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,28 +7,24 @@ using System.Web;
 
 namespace Flock.Logic
 {
-    public static class LoginLogic
+    public class LoginLogic
     {
-        private static Boolean isLogin = false;
+        private Boolean _isLogin;
+        private IUserRepository _userRep;
 
-        // -- Simulo una lectura de datos
-        private static List<UserModel> Users
+        public LoginLogic(IUserRepository userRep)
         {
-            get
-            {
-                var ListUser = new List<UserModel>();
-                ListUser.Add(new UserModel() { UserID = 1, UserName = "Usuario", UserPass = "Contra" });
-                return ListUser;
-            }
+            _isLogin = false;
+            _userRep = userRep;
         }
 
-        public static void Login(UserModel oUser, ref ResponseModel response)
+        public void Login(UserModel oUser, ref ResponseModel response)
         {
             LogLogic.Log("Inicia la busqueda de Usuario ");
-            var user = GetUser(oUser.UserName);
-            isLogin = user != null && user.UserPass == oUser.UserPass;
+            var user = _userRep.GetUser(oUser.UserName);
+            _isLogin = user != null && user.UserPass == oUser.UserPass;
 
-            if (isLogin)
+            if (_isLogin)
             {
                 LogLogic.Log("Usuario logueado OK ");
                 response.Type = "OK";
@@ -39,11 +36,6 @@ namespace Flock.Logic
                 response.Type = "Error";
                 response.Message = "Datos invalidos";
             }
-        }
-
-        private static UserModel GetUser(string userName)
-        {
-            return Users.Find(u => u.UserName == userName);
         }
     }
 }

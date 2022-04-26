@@ -11,13 +11,19 @@ namespace Flock.Controllers
 {
     public class LocationController : ApiController
     {
+        LocationLogic _locationLogic;
+
+        public LocationController()
+        {
+            _locationLogic = new LocationLogic();
+        }
 
         public ResponseModel GetLocation(String provinceName)
         {
             var response = new ResponseModel();
             try
             {
-                LocationLogic.GetLocation(provinceName, ref response);
+                _locationLogic.GetLocation(provinceName, ref response);
             }
             catch (Exception e)
             {

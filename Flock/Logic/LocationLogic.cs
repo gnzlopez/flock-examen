@@ -9,9 +9,9 @@ using System.Web;
 
 namespace Flock.Logic
 {
-    public static class LocationLogic
+    public class LocationLogic
     {
-        public static void GetLocation(String provinceName, ref ResponseModel response)
+        public void GetLocation(String provinceName, ref ResponseModel response)
         {
             var provResult = CallGobApi(provinceName).Result;
 
@@ -29,7 +29,7 @@ namespace Flock.Logic
             }
         }
 
-        public static async Task<ProvinceModel> CallGobApi(String provinceName)
+        public async Task<ProvinceModel> CallGobApi(String provinceName)
         {
             LogLogic.Log("Llamo al WS de Provincias ");
 
